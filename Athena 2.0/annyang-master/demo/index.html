@@ -51,7 +51,7 @@ function test(s) {
       document.getElementById("cold").innerText = finalString;
       $('#cold').show(finalString);
     }
-    /*
+    
     var mapping = function(tag){
       var url2;
       var longitude;
@@ -76,7 +76,7 @@ function test(s) {
       url2 = "https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d300338.3370245011!2d" + longitude+ "!3d" + latitude + "!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1628026288115!5m2!1sen!2sus";
       document.getElementById("myFrame").src = url2;
     }
-*/
+
 var timer = function(tag){
   var aOrAn = tag.split(" ")[0];
   var trueOutput = tag.split(" ")[1];
@@ -134,7 +134,7 @@ function alertFunc(){
     //   You can pass a function, a function name (as a string), or write your function as part of the commands object.
     var commands = {
       'what\'s *search':      calculate,
-      'how\'s the weather in *search':    showTPS, 
+      'how\'s the weather in *search':    (showTPS, mapping),  
       'tell me *search':       checkJokes,
       'set *search timer': timer
     };
