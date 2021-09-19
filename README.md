@@ -3,7 +3,7 @@ A website that lets you do simple commands with your voice.
 Idea from talater/annyang. Their github is https://github.com/TalAter/annyang.
 
 ## Introduction
-I started off wanting to do a speech identification project, using an API to figure out how to combine that with facial recognition on Iphones. However, I soon realized it was too complex to implement on my own personal laptop, so I switched the project to a speech recognition website. Using web dev and design and using my own commands, I turned the website more into a personal "Siri". 
+I started off wanting to do a speech identification project, using an API to figure out how to combine that with facial recognition on Iphones. However, I soon realized it was a massive library that were too time consuming and were too out of my scope for my technical abilities for me to put on my own personal laptop, so I switched the project to a speech recognition website. Using web dev and design and using my own commands, I turned the website more into a personal "Siri". 
 
 ## Research
 I first started with research different speech recognition APIs that I could implement on my laptop to run speech. I tried implementing Kaldi, alphacep, and even cmusphinx, but they were way to complicated to integrate onto my laptop. I then shifted my lens on a different project. The new project was using one of the APIs to have a speech recognition based website that will allow a user to run commands. Although the algorithm for the speech recognition software was already written, I still had to write my own code and commands to get the website to its final result. 
@@ -59,5 +59,5 @@ Using the Talater/annyang API, I learned that if you inspect the live server and
     }
 ````
 
-### Result:
-The result is four different commands. One is a math command that can do arithmetic. Another is a weather command that allows the user to find the temperature of a city using weathermap API. The weather command also comes with a map that zooms in to the city that the user wants to find the temperature of. There's also a joke command, using a dad joke API. Lastly, there is a timer command that pops up a window when the time is over. 
+### Usage:
+Using Athena is 
