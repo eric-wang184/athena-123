@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Athena! Easily accesible speech recognition site</title>
+  <meta name="description" content="annyang is a JavaScript SpeechRecognition library that makes adding voice commands to your site super-easy. Let your users control your site with their voice." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta property="og:image" content="https://www.talater.com/annyang/images/icon_speech.png"/>
+  <meta property="og:title" content="Athena! Easily accesible speech recognition site"/>
+  <meta property="og:url" content="https://www.talater.com/annyang/"/>
+  <meta property="og:site_name" content="annyang"/>
+  <meta property="fb:admins" content="568390229" />
+  <script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <script>
+  "use strict";
+
+  // first we make sure annyang started succesfully
+  if (annyang) {
+
+    // define the functions our commands will run.
+
+const re = /(?:(?:^|[-+_*/])(?:\s*-?\d+(\.\d+)?(?:[eE][+-]?\d+)?\s*))+$/;
+function test(s) {
+  re.test(s);
+}
+    var calculate = function(tag){
+      if (re.test(tag)){
+      scrollTo("#section_maths"); 
+      var answer = eval(tag);
+     document.getElementById("calculations").innerHTML= answer;
+     $('#calculations').show(answer);
+      }
+    };
+    
+    var showTPS = function(tag) {
+      scrollTo("#section_weather");
+      const apiKey = '594635a290e1406b25e0ba09a461d4d1';
+      var url = 'http://api.openweathermap.org/data/2.5/weather?q='+tag+'&appid='+apiKey + '&units=imperial';
+      var xmlhttp;
+      if (window.XMLHttpRequest){
+        xmlhttp = new XMLHttpRequest();
+      }
+      xmlhttp.open("GET", url, false, null, null);
+      xmlhttp.send();
+      var respondText = xmlhttp.responseText;
+      var stringText; 
+      stringText = JSON.stringify(respondText);
+      var indexVal1 = stringText.indexOf("temp");
+      var indexVal2 = stringText.indexOf("visibility")
+      var finalString = stringText.substring(indexVal1, indexVal2)
+      document.getElementById("cold").innerText = finalString;
+      $('#cold').show(finalString);
+    }
+    /*
+    var mapping = function(tag){
+      var url2;
+      var longitude;
+      var longitudeIndex;
+      var latitude;
+      var latitudeIndex;
+      const apiKey = '594635a290e1406b25e0ba09a461d4d1';
+      var url = 'https://api.openweathermap.org/data/2.5/weather?q='+tag+'&appid='+apiKey + '&units=imperial';
+      var xmlhttps;
+      if (window.XMLHttpRequest){
+        xmlhttps = new XMLHttpRequest();
+      }
+      xmlhttps.open("GET", url, false, null, null);
+      xmlhttps.send();
+      var respondText = xmlhttps.responseText;
+      var stringText; 
+      stringText = JSON.stringify(respondText);
+      longitudeIndex = respondText.indexOf("lon");
+      latitudeIndex = respondText.indexOf("lat");
+      longitude = respondText.substring(longitudeIndex + 5, longitudeIndex + 10);
+      latitude = respondText.substring(latitudeIndex + 5, latitudeIndex + 10);
+      url2 = "https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d300338.3370245011!2d" + longitude+ "!3d" + latitude + "!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1628026288115!5m2!1sen!2sus";
+      document.getElementById("myFrame").src = url2;
+    }
+*/
+var timer = function(tag){
+  var aOrAn = tag.split(" ")[0];
+  var trueOutput = tag.split(" ")[1];
+  var numb = trueOutput.split(" ")[0];
+  var degree = trueOutput.split(" ")[1];  
+  console.log(numb);
+  console.log(Number(numb));
+  if (tag.includes("second")){
+    setTimeout(alertFunc, numb * 1000)
+  }
+  else if (tag.includes("minute")){
+    if (numb == "one"){
+      setTimeout(alertFunc, 60000);
+    }
+    else if (numb == "five"){
+      setTimeout(alertFunc, 300000);
+    }
+    else {
+      setTimeout(alertFunc, parseInt(numb) * 60000);
+    }
+ 
+  }
+  else if (tag.includes("hour")){
+    setTimeout(alertFunc, numb * 360000)
+  } 
+}
+
+const jokeText = document.querySelector('.joke-text');
+var checkJokes = function(tag){
+  if (tag == "a joke" || tag == "another joke"){
+    getJoke();
+  }
+}
+function getJoke() {
+  fetch('https://icanhazdadjoke.com/', {
+    headers: {
+      'Accept': 'application/json'
+    }
+  }).then(function(response) {
+    return response.json();
+  }).then(function(data) {
+    const joke = data.joke;
+    document.getElementById("haha").innerHTML= joke;
+     $('#haha').show(joke);
+  })
+}
+
+function alertFunc(){
+  alert('Timer is done');
+}
+
+    // define our commands.
+    // * The key is the phrase you want your users to say.
+    // * The value is the action to do.
+    //   You can pass a function, a function name (as a string), or write your function as part of the commands object.
+    var commands = {
+      'what\'s *search':      calculate,
+      'how\'s the weather in *search':    showTPS, 
+      'tell me *search':       checkJokes,
+      'set *search timer': timer
+    };
+
+    // OPTIONAL: activate debug mode for detailed logging in the console
+    annyang.debug();
+
+    // Add voice commands to respond to
+    annyang.addCommands(commands);
+
+    // OPTIONAL: Set a language for speech recognition (defaults to English)
+    // For a full list of language codes, see the documentation:
+    // https://github.com/TalAter/annyang/blob/master/docs/FAQ.md#what-languages-are-supported
+    annyang.setLanguage('en');
+
+    // Start listening. You can call this here, or attach this call to an event, button, etc.
+    annyang.start();
+  } else {
+    $(document).ready(function() {
+      $('#unsupported').fadeIn('fast');
+    });
+  }
+
+  var scrollTo = function(identifier, speed) {
+    $('html, body').animate({
+        scrollTop: $(identifier).offset().top
+    }, speed || 1000);
+  }
+
+  
+  </script>
+  <link rel="stylesheet" href="css/main.css" />
+</head>
+<body>
+  <div class="banner" style="background: #009579; ">
+    <div class="banner_content" style="padding: 45 px; margin: 0 auto;" >
+      <div class="banner_left_text" style="flex-grow: 1; line-height: 1.4; font-size: 55px; font-family: serif;" >Athena
+       <a class = "banner_right_text" href="about.html" style="font-size: 55; font-family: sans-serif;">About</a>
+      </div>
+      </div>
+    </div>
+
+  <section id="section_header" >
+    <h1 style="font-size: 200px; font-weight: 900; padding-bottom: 50px; color: white;">Athena</h1>
+    <h2 style = "font-size: 35px; color: white;">Athena is a website that can help a user with multiple tasks, like Siri</h2>
+    <img src="images/icon_user.png" alt="User icon">
+    <img src="images/icon_speech.png" alt="Speech baloon icon">
+  </section>
+
+<div style ="display: grid; grid-template-columns: 1fr 1fr ; ">
+   
+  <section id="section_maths" style = "background-color: teal; color: white; font-family: Verdana, Geneva, Tahoma, sans-serif;">
+    <p><em>Let's try some easy math calculations&hellip;</em></p>
+    <p class="voice_instructions">Say "What's five times three"</p>
+    <p class="voice_instructions">Say "What's four plus seventeen"</p>
+    <p class="voice_instructions">Now go wild. Say "What's &hellip;" and that will be calculated</p>
+    <img src="images/mathsymbols.png" alt="math">
+    <div id="calculations" class="hidden"></div>
+  </section>
+  <section id="section_weather" style="background-color:red; color: white; font-family: Verdana, Geneva, Tahoma, sans-serif;
+  ">
+   <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1893240.700131635!2d-44.04489321788291!3d-22.059701929620694!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x981894cae28ac3%3A0x349c31ac10583d0!2sState%20of%20Rio%20de%20Janeiro%2C%20Brazil!5e0!3m2!1sen!2sus!4v1627531059114!5m2!1sen!2sus" id = "myFrame" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+    <p><em>Let's find the weather in different locations&hellip;</em></p>
+    <p class="voice_instructions">Say "How's the weather in Bangkok"</p>
+    <p class="voice_instructions">Say "How's the weather in New York City"</p>
+    <p class="voice_instructions">Now go wild. Say "How's the weather in &hellip;" and the weather of that city will be shown</p>
+    <div id="cold" class="hidden"></div>
+  </section>
+
+  <section id = "section_jokes" style="background-color:black; color: white; font-family: Verdana, Geneva, Tahoma, sans-serif;
+  ">
+    <p><em>How About Some Dad Jokes 😆</em></p>
+    <p class="voice_instructions">Say "Tell me a joke" and a joke will appear </p>
+    <p class="voice_instructions">Say "Tell me another joke" and a different joke will appear </p>
+    <div id="haha" class="hidden"></div>
+  </section>  
+  
+  <section id="section_times" style="background-color: coral; color: brown; font-family: Verdana, Geneva, Tahoma, sans-serif;
+  ">
+    <p><em>What about a timer?</em></p>
+    <p class="voice_instructions">Say "Set a three second timer"</p>
+    <p class="voice_instructions">Say "Set a one minute timer"</p>
+    <p class="voice_instructions">Now go wild. Say "set a(n) &hellip; timer " and a timer will start</p>
+    <div id="timer" class="hidden"></div>
+    <table>
+      <tr><td style="text-align: right;"><canvas id="canvas_tt6109b35e693ae" width="175" height="175"></canvas></td></tr>
+      <tr><td style="text-align: right; font-weight: bold"><a href="//24timezones.com/San-Jose/time" style="text-decoration: none" class="clock24" id="tz24-1628025694-c1283-eyJzaXplIjoiMTc1IiwiYmdjb2xvciI6IkZGRkZGRiIsImxhbmciOiJlbiIsInR5cGUiOiJhIiwiY2FudmFzX2lkIjoiY2FudmFzX3R0NjEwOWIzNWU2OTNhZSJ9" title="current time in San Jose" target="_blank" rel="nofollow"></a></td></tr>
+  </table>
+<script type="text/javascript" src="//w.24timezones.com/l.js" async></script>
+  </section>
+  </div>
+
+
+
+
+  <div id="unsupported" class="hidden">
+    <h4>It looks like your browser doesn't support speech recognition.</h4>
+    <p>annyang plays nicely with all browsers, progressively enhancing modern browsers that support the SpeechRecognition standard, while leaving users with older browsers unaffected.</p>
+    <p>Please visit <a href="http://www.annyangjs.com/">http://www.annyangjs.com/</a> in a desktop browser like Chrome.</p>
+  </div>
+  <script>
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-24775009-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <script src="./vendor/js/highlight.pack.js"></script>
+</body>
+</html>
