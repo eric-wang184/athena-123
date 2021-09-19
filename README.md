@@ -11,7 +11,7 @@ I first started with research different speech recognition APIs that I could imp
 
 
 ## Implementation
-I have four commands. The first is the math command, the second is the weather and mapping function, the third is the jokes command, and the last is the timer. 
+I have four commands, all within the index.html file. These are all written in Javascript, and to run these functions, you could clone the annyang repository and put these functions in the commadn section in the index.html. The first is the math command, the second is the weather and mapping function, the third is the jokes command, and the last is the timer. 
 ````html
 var calculate = function(tag){
       if (re.test(tag)){
@@ -123,7 +123,7 @@ function getJoke() {
 
 ````
 ## Trials 
-Using the Talater/annyang API, I learned that if you inspect the live server and click on the console section, the site will tell you what you've said. For example, let's say the user states "What's two plus two?" The annyang API will have a few different results in the console section. This helped me tremendously as I did all of my commands, as I could see what the API would output as I said something.
+Using the Talater/annyang API, I learned that if you inspect the live server and click on the console section, the site will tell you what you've said. For example, let's say the user states "What's two plus two?" The annyang API will have a few different results in the console section. This helped me tremendously as I did all of my commands, as I could see what the API would output as I said something. Also, when I used the WeatherMap API, I had to cut out a lot of the information, as I only cared about the temperature.
 
 ### Usage:
-Using Athena is 
+Using Athena is pretty simple, with a few steps. First is to git clone the Athena repository. Next is to download VS Code, and open the folder containing Athena. Then, download Live Server, and once that is done, you can open up the index.html with Live Server and you can see the site on a Chrome browser. 
