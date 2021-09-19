@@ -8,9 +8,20 @@ I started off wanting to do a speech identification project, using an API to fig
 ## Research
 I first started with research different speech recognition APIs that I could implement on my laptop to run speech. I tried implementing Kaldi, alphacep, and even cmusphinx, but they were way to complicated to integrate onto my laptop. I then shifted my lens on a different project. The new project was using one of the APIs to have a speech recognition based website that will allow a user to run commands. Although the algorithm for the speech recognition software was already written, I still had to write my own code and commands to get the website to its final result. 
 
-## Implementation
-Using the Talater/annyang API, I learned that if you inspect the live server and click on the console section, the site will tell you what you've said. For example, let's say the user states "What's two plus two?" The annyang API will have a few different results in the console section. This helped me tremendously as I did all of my commands. For example, I had to specify for the timer function that "Set a one minute timer", the "one" was referring to the number 1, not the word "one". I first did the math command, then the weather command, then the timer, and finally the joke function. With the weather command, it was tricky as I first had to find the right weather API to put into my code. Then, I had to write a another function just for the map and the zooming in. That took me approximately three weeks to do. The code that I wrote for the two function is down below. 
 
+
+## Implementation
+I have four commands. The first is the math command, the second is the weather and mapping function, the third is the jokes command, and the last is the timer. 
+````html
+var calculate = function(tag){
+      if (re.test(tag)){
+      scrollTo("#section_maths"); 
+      var answer = eval(tag);
+     document.getElementById("calculations").innerHTML= answer;
+     $('#calculations').show(answer);
+      }
+    };
+````
 ````html
 
     var showTPS = function(tag) {
@@ -58,6 +69,61 @@ Using the Talater/annyang API, I learned that if you inspect the live server and
       document.getElementById("myFrame").src = url2;
     }
 ````
+````html
+var timer = function(tag){
+  var aOrAn = tag.split(" ")[0];
+  var trueOutput = tag.split(" ")[1];
+  var numb = trueOutput.split(" ")[0];
+  var degree = trueOutput.split(" ")[1];  
+  console.log(numb);
+  console.log(Number(numb));
+  if (tag.includes("second")){
+    setTimeout(alertFunc, numb * 1000)
+  }
+  else if (tag.includes("minute")){
+    if (numb == "one"){
+      setTimeout(alertFunc, 60000);
+    }
+    else if (numb == "five"){
+      setTimeout(alertFunc, 300000);
+    }
+    else {
+      setTimeout(alertFunc, parseInt(numb) * 60000);
+    }
+ 
+  }
+  else if (tag.includes("hour")){
+    setTimeout(alertFunc, numb * 360000)
+  } 
+}
+function alertFunc(){
+  alert('Timer is done');
+}
+````
+````html
+const jokeText = document.querySelector('.joke-text');
+var checkJokes = function(tag){
+  if (tag == "a joke" || tag == "another joke"){
+    getJoke();
+  }
+}
+function getJoke() {
+  fetch('https://icanhazdadjoke.com/', {
+    headers: {
+      'Accept': 'application/json'
+    }
+  }).then(function(response) {
+    return response.json();
+  }).then(function(data) {
+    const joke = data.joke;
+    document.getElementById("haha").innerHTML= joke;
+     $('#haha').show(joke);
+  })
+}
+
+````
+## Trials 
+Using the Talater/annyang API, I learned that if you inspect the live server and click on the console section, the site will tell you what you've said. For example, let's say the user states "What's two plus two?" The annyang API will have a few different results in the console section. This helped me tremendously as I did all of my commands, as I could see what the API would output as I said something.
 
 ### Usage:
 Using Athena is 
